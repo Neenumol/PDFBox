@@ -1,10 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.pdfbox.FRIGenerator;
-import com.example.demo.pdfbox.FRSGenerator;
-import com.example.demo.pdfbox.FRSPDFVariables;
-import com.example.demo.pdfbox.PDFGenerator;
-import com.example.demo.pdfbox.Paragraph;
+import com.example.demo.pdfbox.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +25,18 @@ public class HelloController {
         new FRIGenerator().generate();
         return "FRI generated!";
     }
+
+    @GetMapping("/generate-fri")
+    public String generateFRI1() throws IOException {
+        new VN_FRI().generate();
+        return "FRI generated!";
+    }
+    @GetMapping("/generate-frs")
+    public String generateFRS() throws IOException {
+        new VN_FRS().generate();
+        return "FRs generated!";
+    }
+
 
 
 
