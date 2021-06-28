@@ -23,6 +23,8 @@ public class VN_FRS {
         pageFour(doc);
         pageFive(doc);
         pageSix(doc);
+        pageSeven(doc);
+        pageEight(doc);
         doc.save("src/main/resources/frs.pdf");
         doc.close();
     }
@@ -168,6 +170,321 @@ public class VN_FRS {
         createHeading1(cont, fontBold, startX, yOffset, leading);
         PageSixtTableAndContent(cont, width, font,doc, myPage);
         cont.close();
+    }
+
+    private void pageSeven(PDDocument doc) throws IOException {
+        PDPage myPage = new PDPage();
+        doc.addPage(myPage);
+        PDRectangle mediabox = myPage.getMediaBox();
+        float fontSize = 12;
+        float leading = 1.5f * fontSize;
+        float margin = 75;
+        float width = mediabox.getWidth() - 2 * margin;
+        float startX = mediabox.getLowerLeftX() + margin;
+        float startY = mediabox.getUpperRightY() - margin;
+        float yOffset = startY;
+        PDType1Font font = PDType1Font.TIMES_ROMAN;
+        PDType1Font fontBold = PDType1Font.TIMES_BOLD_ITALIC;
+        PDPageContentStream cont = new PDPageContentStream(doc, myPage);
+        // PDFont font1 = PDTrueTypeFont.loadTTF(doc, "fonts/arialuni.ttf");
+        float scale = 1f;
+        logoCreation(doc, cont, startX, startY);
+        yOffset -= 40;
+        createHeading1(cont, fontBold, startX, yOffset, leading);
+        createSevehthContent(cont, width, font,doc, myPage);
+        cont.close();
+    }
+
+    private void pageEight(PDDocument doc) throws IOException {
+        PDPage myPage = new PDPage();
+        doc.addPage(myPage);
+        PDRectangle mediabox = myPage.getMediaBox();
+        float fontSize = 12;
+        float leading = 1.5f * fontSize;
+        float margin = 75;
+        float width = mediabox.getWidth() - 2 * margin;
+        float startX = mediabox.getLowerLeftX() + margin;
+        float startY = mediabox.getUpperRightY() - margin;
+        float yOffset = startY;
+        PDType1Font font = PDType1Font.TIMES_ROMAN;
+        PDType1Font fontBold = PDType1Font.TIMES_BOLD;
+        PDPageContentStream cont = new PDPageContentStream(doc, myPage);
+        float scale = 1f;
+        logoCreation(doc, cont, startX, startY);
+        yOffset -= 40;
+        createEightHeading(cont, fontBold, startX, yOffset, leading,doc,myPage);
+        createEightPageContent(cont, width, font,doc,myPage);
+        drawPage_EightTable(doc, myPage);
+        createEightContent1(cont, width, font,doc, myPage);
+        cont.close();
+    }
+
+    private void createEightContent1(PDPageContentStream cont, float width, PDType1Font font, PDDocument doc, PDPage myPage) throws IOException {
+
+        float margin = 75;
+        float yStartNewPage = myPage.getMediaBox().getHeight() - (2 * margin);
+        float tableWidth = myPage.getMediaBox().getWidth() - (2 * margin);
+        boolean drawContent = true;
+        float bottomMargin = 20;
+        float yPosition = 380;
+        BaseTable table =
+                new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth,
+                        margin, doc, myPage, true, drawContent);
+        float defaultRowHeight = 24f;
+        Row<PDPage> headerRow = table.createRow(30f);
+        Cell<PDPage> cell = headerRow.createCell(100,
+                "Estimated funding date is based on the date of Facility Request generated. Actual funding date is the date<br>" +
+                        "<br>that the funds, under this Facility, is sent to your Designated Account");
+        cell.setTopBorderStyle(null);
+        cell.setBottomBorderStyle(null);
+        cell.setLeftBorderStyle(null);
+        cell.setRightBorderStyle(null);
+        table.addHeaderRow(headerRow);
+        Row<PDPage> headerRow1 = table.createRow(defaultRowHeight);
+        cell = headerRow1.createCell(100,
+                " Estimated repayment date is based on the estimated funding date. Repayment is expected on the actual<br>" +
+                        "<br>repayment date which is based off the actual funding date.");
+        cell.setTopBorderStyle(null);
+        cell.setBottomBorderStyle(null);
+        cell.setLeftBorderStyle(null);
+        cell.setRightBorderStyle(null);
+        table.addHeaderRow(headerRow1);
+        table.draw();
+    }
+
+    private void createEightPageContent(PDPageContentStream cont, float width, PDType1Font font, PDDocument doc, PDPage myPage) throws IOException {
+        Paragraph paragraph = new Paragraph();
+
+
+        String text = "(Estimated Funding Date): <date of FRS generated>*";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+    }
+
+    private void createEightHeading(PDPageContentStream cont, PDType1Font fontBold, float startX, float yOffset, float leading, PDDocument doc, PDPage myPage) throws IOException {
+        cont.beginText();
+        cont.setFont(PDType1Font.TIMES_ITALIC, 10.0f);
+        cont.newLineAtOffset(startX, yOffset);
+
+        float margin = 75;
+        float yStartNewPage = myPage.getMediaBox().getHeight() - (2 * margin);
+        float tableWidth = myPage.getMediaBox().getWidth() - (2 * margin);
+        boolean drawContent = true;
+        float bottomMargin = 20;
+        float yPosition = 710;
+        BaseTable table =
+                new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth,
+                        margin, doc, myPage, true, drawContent);
+
+        Row<PDPage> headerRow = table.createRow(30f);
+        Cell<PDPage> cell = headerRow.createCell(100,
+                "<b>REPAYMENT SCHEDULE ANNEX</b>");
+        cell.setTopBorderStyle(null);
+        cell.setFontSize(13);
+        cell.setAlign(HorizontalAlignment.CENTER);
+        cell.setBottomBorderStyle(null);
+        cell.setLeftBorderStyle(null);
+        cell.setRightBorderStyle(null);
+        table.addHeaderRow(headerRow);
+        table.draw();
+    }
+
+    private void drawPage_EightTable(PDDocument doc, PDPage myPage) throws IOException {
+        float margin = 75;
+        float yStartNewPage = myPage.getMediaBox().getHeight() - (2 * margin);
+        // we want table across whole page width (subtracted by left and right margin ofcourse)
+        float tableWidth = myPage.getMediaBox().getWidth() - (2 * margin);
+
+        boolean drawContent = true;
+        float yStart = yStartNewPage;
+        float bottomMargin = 70;
+        // y position is your coordinate of top left corner of the table
+        float yPosition = 650;
+
+        BaseTable table =
+                new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth,
+                        margin, doc, myPage, true, drawContent);
+
+        float defaultRowHeight = 24f;
+
+        Row<PDPage> headerRow = table.createRow(defaultRowHeight);
+        Cell<PDPage> cell = headerRow.createCell(50, "(Estimated repayment date(s))");
+        //        cell.setBorderStyle(null);
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow.createCell(50, "(Amount payable on corresponding repayment date)");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow);
+        Row<PDPage> headerRow1 = table.createRow(defaultRowHeight);
+        cell = headerRow1.createCell(50, "<next repayment date dd/mm/yyyy>");
+        //        cell.setBorderStyle(null);
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow1.createCell(50, "VND <xxxxx>");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow1);
+        Row<PDPage> headerRow2 = table.createRow(defaultRowHeight);
+        cell = headerRow2.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow2.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow2);
+        Row<PDPage> headerRow3 = table.createRow(defaultRowHeight);
+        cell = headerRow3.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow3.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow3);
+        Row<PDPage> headerRow4 = table.createRow(defaultRowHeight);
+        cell = headerRow4.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow4.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow4);
+        Row<PDPage> headerRow5 = table.createRow(defaultRowHeight);
+        cell = headerRow5.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow5.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow5);
+        Row<PDPage> headerRow6 = table.createRow(defaultRowHeight);
+        cell = headerRow6.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow6.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow6);
+        Row<PDPage> headerRow7= table.createRow(defaultRowHeight);
+        cell = headerRow7.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow7.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow7);
+        Row<PDPage> headerRow8 = table.createRow(defaultRowHeight);
+        cell = headerRow8.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow8.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow8);
+        Row<PDPage> headerRow9 = table.createRow(defaultRowHeight);
+        cell = headerRow9.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow9.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow9);
+        Row<PDPage> headerRow0 = table.createRow(defaultRowHeight);
+        cell = headerRow0.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        cell = headerRow0.createCell(50, "");
+        cell.setValign(VerticalAlignment.MIDDLE);
+        table.addHeaderRow(headerRow0);
+        table.draw();
+    }
+
+
+    private void createSevehthContent(PDPageContentStream cont, float width, PDType1Font font, PDDocument doc, PDPage myPage) throws IOException {
+        Paragraph paragraph = new Paragraph();
+
+
+        String text = "(Please make these disbursements to the following accounts)";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "<VND85,800,000>  (to Validus’ account):";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Account Name): VGrowth Development Co., Ltd";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Bank Name): Sacombank";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                " (Bank Branch):  Transaction Office";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                " (Bank Account No.): 0602.1735.6061 (VND)";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Swift code): SGTTVNVX";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+
+
+         text = "<VND2,914,200,000> to SME’s account:";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Account Name): <CONG TY CP ABC>";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Bank Name): <xxxxxxxxxxxx>";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Bank Branch): <xxxxxxxx>";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Bank Account No.): <xxxxxxxxxx>";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+
+        text =
+                " ________________________________";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                " (Name):";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+
+        text =
+                "(Designation):";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                " SME: <CONG TY CP ABC>";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Date):";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                " (In the presence of):";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "______________________________";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Name):";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+        text =
+                "(Identification number):";
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+
     }
 
     private void createfifthContent(PDPageContentStream cont, float width, PDType1Font font, PDDocument doc, PDPage myPage) throws IOException {
@@ -369,10 +686,6 @@ public class VN_FRS {
         cell.setRightBorderStyle(null);
         table.addHeaderRow(headerRow);
         table.draw();
-
-        /*yOffset -= leading;
-        cont.showText("(FACILITY REQUEST FOR INVESTORS)");
-        cont.newLineAtOffset(0, -leading);*/
     }
 
     private void createHeading1(PDPageContentStream cont, PDType1Font fontBold,
