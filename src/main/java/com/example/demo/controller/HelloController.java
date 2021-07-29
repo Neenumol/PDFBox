@@ -20,10 +20,10 @@ public class HelloController {
         return "FRS Generated!";
     }
 
-    @GetMapping("/generate-fri")
+    @GetMapping("/generate-POA")
     public String generateFRI() throws IOException {
-        new FRIGenerator().generate();
-        return "FRI generated!";
+        new POA().generate();
+        return "POA generated!";
     }
 
     @GetMapping("/generate-fri")

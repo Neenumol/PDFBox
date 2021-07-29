@@ -5,9 +5,11 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,13 +20,13 @@ public class VN_FRS {
 
         PDDocument doc = new PDDocument();
         pageOne(doc);
-        pageTwo(doc);
-        pageThree(doc);
-        pageFour(doc);
-        pageFive(doc);
-        pageSix(doc);
-        pageSeven(doc);
-        pageEight(doc);
+        //pageTwo(doc);
+        //pageThree(doc);
+       // pageFour(doc);
+       // pageFive(doc);
+       // pageSix(doc);
+       // pageSeven(doc);
+       // pageEight(doc);
         doc.save("src/main/resources/frs.pdf");
         doc.close();
     }
@@ -40,10 +42,12 @@ public class VN_FRS {
         float startX = mediabox.getLowerLeftX() + margin;
         float startY = mediabox.getUpperRightY() - margin;
         float yOffset = startY;
-        PDType1Font font = PDType1Font.TIMES_ROMAN;
+        //PDType1Font font = PDType1Font.TIMES_ROMAN;
+        PDType0Font font =getFont(doc);
         PDType1Font fontBold = PDType1Font.TIMES_BOLD_ITALIC;
         PDPageContentStream cont = new PDPageContentStream(doc, myPage);
-        // PDFont font1 = PDTrueTypeFont.loadTTF(doc, "fonts/arialuni.ttf");
+      // cont.setFont(getFont(doc),12);
+       // PDFont font1 = PDTrueTypeFont.loadTTF(doc, "fonts/arialuni.ttf");
         float scale = 1f;
         logoCreation(doc, cont, startX, startY);
         yOffset -= 40;
@@ -67,6 +71,7 @@ public class VN_FRS {
         PDType1Font font = PDType1Font.TIMES_ROMAN;
         PDType1Font fontBold = PDType1Font.TIMES_BOLD_ITALIC;
         PDPageContentStream cont = new PDPageContentStream(doc, myPage);
+        cont.setFont(getFont(doc),12);
         // PDFont font1 = PDTrueTypeFont.loadTTF(doc, "fonts/arialuni.ttf");
         float scale = 1f;
         logoCreation(doc, cont, startX, startY);
@@ -74,6 +79,10 @@ public class VN_FRS {
         createHeading1(cont, fontBold, startX, yOffset, leading);
         drawPage_TwoTable(doc, myPage);
         cont.close();
+    }
+    private static PDType0Font getFont(PDDocument pdDocument) throws IOException {
+        PDType0Font font = PDType0Font.load(pdDocument, new File("src/main/resources/static/Roboto/Roboto-Light.ttf"));
+        return font;
     }
 
 
@@ -633,17 +642,19 @@ public class VN_FRS {
     }
 
     private void createContent(PDPageContentStream cont, float width,
-                               PDType1Font font)
+                               PDType0Font font)
             throws IOException {
 
         Paragraph paragraph = new Paragraph();
-  /*  String text =
-            "Các thuật ngữ được định nghĩa và các nguyên tắc được diễn giải tại Các Điều Khoản Và Điều Kiện Của Các\n" +
-                    "SME sẽ có cùng ý nghĩa và hiệu lực khi được sử dụng trong Đơn Đăng Ký Vay này, trừ khi được định\n" +
-                    "nghĩa khác đi theo Đơn Đăng Ký Vay này.";
+        String text =
+            "Các thuật ngữ được định nghĩa và các nguyên tắc được diễn giải tại Các Điều Khoản Và Điều Kiện Của Các " +
+             "SME sẽ có cùng ý nghĩa và hiệu lực khi được sử dụng trong Đơn Đăng Ký Vay này, trừ khi được định" +
+                "nghĩa khác đi theo Đơn Đăng Ký Vay này.";
 
-    paragraph.addParagraph(cont, width, 0, -12, text, true, font);*/
-        String text = "(Terms defined and the rules of interpretation in the SMEs’ Terms and Conditions have the same meaning and" +
+        paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+
+   paragraph.addParagraph(cont, width, 0, -12, text, true, font);
+         text  = "(Terms defined and the rules of interpretation in the SMEs’ Terms and Conditions have the same meaning and" +
                 "effect in this Facility Request unless a different meaning is ascribed to it here.)";
         paragraph.addParagraph(cont, width, 0, -12, text, true, font);
         text =

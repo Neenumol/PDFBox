@@ -47,7 +47,7 @@ public class VN_FRI {
         PDType1Font font = PDType1Font.TIMES_ROMAN;
         PDType1Font fontBold = PDType1Font.TIMES_BOLD_ITALIC;
         PDPageContentStream cont = new PDPageContentStream(doc, myPage);
-       // PDFont font1 = PDTrueTypeFont.loadTTF(doc, "fonts/arialuni.ttf");
+        //PDFont font1 = PDTrueTypeFont.loadTTF(doc, "fonts/arialuni.ttf");
         float scale = 1f;
         logoCreation(doc, cont, startX, startY);
         yOffset -= 40;
